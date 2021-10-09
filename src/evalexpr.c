@@ -149,12 +149,29 @@ struct queue *to_rpn(struct queue *q_tokens)
         }
         else
         {
-            if (operators)
+            if (t.value == ')')
             {
-                if (priority[t.value - 37] < priority[operators->data.value - 37])
+                while (operators->data.value != '(')
                 {
-                    operators = stack_pop(operators, &temp);
-                    rpn = queue_push(rpn, temp);
+                    if (!operators)
+                    {
+                        exit(1);
+                    }
+                    operators = stack_pop(operators, &t);
+                    rpn = queue_push(rpn, t);
+                }
+                operators = stack_pop(operators, &t);
+                continue;
+            }
+            else if (operators)
+            {
+                if (operators->data.value != '(' && t.value != '(')
+                {
+                    if (priority[t.value - 37] < priority[operators->data.value - 37])
+                    {
+                        operators = stack_pop(operators, &temp);
+                        rpn = queue_push(rpn, temp);
+                    }
                 }
             }
             operators = stack_push(operators, t);
