@@ -90,7 +90,7 @@ static int what_char(char c)
 }
 
 //TODO: handle unary / multiple operator
-static struct queue *create_tokens(const char* operations)
+static struct queue *create_tokens(char* operations)
 {
     int i = 0;
     char *curr_token = malloc(sizeof(char) * 126);
@@ -99,12 +99,12 @@ static struct queue *create_tokens(const char* operations)
     struct queue *t_queue = NULL;
     struct token t_char;
 
-    while (operations[i])
+    while (operations[i] && operations[i] != '\n')
     {
         w_char = what_char(operations[i]);
         if (w_char == 0)
         {
-            while (operations[i] && what_char(operations[i]) == 0)
+            while (operations[i] && operations[i] != '\n' && what_char(operations[i]) == 0)
             {
                 curr_token[curr_i] = operations[i];
                 curr_i++;
@@ -132,7 +132,6 @@ static struct queue *create_tokens(const char* operations)
     return t_queue;
 }
 
-//TODO: add parenthesis handle / priority in stack
 struct queue *to_rpn(struct queue *q_tokens)
 {
     struct stack *operators = NULL;
@@ -185,7 +184,7 @@ struct queue *to_rpn(struct queue *q_tokens)
     return rpn;
 }
 
-int evalexpr(const char* operations)
+int evalexpr(char* operations)
 {
     struct queue* toks = create_tokens(operations);
     struct queue *rpn = to_rpn(toks);
