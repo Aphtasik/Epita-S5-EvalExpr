@@ -4,7 +4,7 @@
 
 typedef int (* const operation)(const int, int);
 
-static const int pritority[] =
+static const int priority[] =
 {
     [ADD] = 0,
     [SUB] = 0,
@@ -139,6 +139,7 @@ struct queue *to_rpn(struct queue *q_tokens)
     struct queue *rpn = NULL;
     struct token t;
 
+    struct token temp;
     while (q_tokens)
     {
         q_tokens = queue_pop(q_tokens, &t);
@@ -148,6 +149,14 @@ struct queue *to_rpn(struct queue *q_tokens)
         }
         else
         {
+            if (operators)
+            {
+                if (priority[t.value - 37] < priority[operators->data.value - 37])
+                {
+                    operators = stack_pop(operators, &temp);
+                    rpn = queue_push(rpn, temp);
+                }
+            }
             operators = stack_push(operators, t);
         }
     }

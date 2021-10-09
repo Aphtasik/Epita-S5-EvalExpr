@@ -10,6 +10,7 @@ evalexpr: $(OBJS) src/main.o
 
 check: $(OBJS) tests/tests.o
 	$(CC) $^ -o evalexpr -lcriterion
+	./evalexpr
 
 clean:
 	$(RM) *.o evalexpr tests/*.o src/*.o
