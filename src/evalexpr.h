@@ -45,6 +45,6 @@ struct queue
 struct queue *queue_push(struct queue *l, struct token elt);
 struct queue *queue_pop(struct queue *l, struct token *elt);
 
-int evalexpr(char* operations);
+int evalexpr(char* operations, int is_rpn);
 
 #endif

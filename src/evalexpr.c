@@ -184,10 +184,18 @@ struct queue *to_rpn(struct queue *q_tokens)
     return rpn;
 }
 
-int evalexpr(char* operations)
+int evalexpr(char* operations, int is_rpn)
 {
     struct queue* toks = create_tokens(operations);
-    struct queue *rpn = to_rpn(toks);
+    struct queue *rpn;
+    if (is_rpn)
+    {
+        rpn = toks;
+    }
+    else
+    {
+        rpn = to_rpn(toks);
+    }
     struct token t;
     struct stack *expr_stack = NULL;
 

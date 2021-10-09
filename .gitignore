@@ -1,0 +1,4 @@
+.vgcore*
+evalexp
+*.o
+
