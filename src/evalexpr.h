@@ -1,8 +1,9 @@
 #ifndef EVALEXPR_H
 #define EVALEXPR_H
 
-#include <stdlib.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
 enum oper
 {
@@ -45,6 +46,6 @@ struct queue
 struct queue *queue_push(struct queue *l, struct token elt);
 struct queue *queue_pop(struct queue *l, struct token *elt);
 
-int evalexpr(char* operations, int is_rpn);
+int evalexpr(char *operations, int is_rpn);
 
 #endif

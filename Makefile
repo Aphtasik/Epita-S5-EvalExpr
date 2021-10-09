@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS= -std=c99 -pedantic -Wall -Wextra -g
+CFLAGS= -std=c99 -pedantic -Wall -Wextra -Wall -g3
 OBJS= src/queue.o src/stack.o src/evalexpr.o src/operations.c
 
 all: $(OBJS) src/main.o

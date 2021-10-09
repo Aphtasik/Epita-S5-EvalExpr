@@ -1,7 +1,7 @@
-#include "evalexpr.h"
-
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
-#include <string.h>
+
+#include "evalexpr.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
             return 1;
         int eval = evalexpr(str, 0);
         printf("%d\n", eval);
+        free(str);
     }
     else if (argc == 2 && strcmp("-rpn", argv[1]) == 0)
     {
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
             return 1;
         int eval = evalexpr(str, 1);
         printf("%d\n", eval);
+        free(str);
     }
     else
     {

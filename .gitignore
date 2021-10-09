@@ -1,4 +1,5 @@
 .vgcore*
-evalexp
+evalexpr
 *.o
+.clang*
 

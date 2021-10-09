@@ -2,26 +2,15 @@
 
 #include <stdio.h>
 
-typedef int (* const operation)(const int, int);
+typedef int (*const operation)(const int, int);
 
-static const int priority[] =
-{
-    [ADD] = 0,
-    [SUB] = 0,
-    [MUL] = 1,
-    [DIV] = 1,
-    [MOD] = 1,
-    [EXP] = 1
+static const int priority[] = {
+    [ADD] = 0, [SUB] = 0, [MUL] = 1, [DIV] = 1, [MOD] = 1, [EXP] = 1
 };
 
-static const operation do_the_maths[] =
-{
-    [ADD] = my_add,
-    [SUB] = my_sub,
-    [MUL] = my_mul,
-    [DIV] = my_div,
-    [MOD] = my_mod,
-    [EXP] = my_pow
+static const operation do_the_maths[] = {
+    [ADD] = my_add, [SUB] = my_sub, [MUL] = my_mul,
+    [DIV] = my_div, [MOD] = my_mod, [EXP] = my_pow
 };
 
 static int my_atoi(char *str)
@@ -73,7 +62,7 @@ static int what_char(char c)
     }
     else
     {
-        if (c ==  '+' || c == '-' || c == '/' || c == '*' || c == '%')
+        if (c == '+' || c == '-' || c == '/' || c == '*' || c == '%')
         {
             return 1;
         }
@@ -89,8 +78,7 @@ static int what_char(char c)
     }
 }
 
-//TODO: handle unary / multiple operator
-static struct queue *create_tokens(char* operations)
+static struct queue *create_tokens(char *operations)
 {
     int i = 0;
     char *curr_token = malloc(sizeof(char) * 126);
@@ -104,7 +92,8 @@ static struct queue *create_tokens(char* operations)
         w_char = what_char(operations[i]);
         if (w_char == 0)
         {
-            while (operations[i] && operations[i] != '\n' && what_char(operations[i]) == 0)
+            while (operations[i] && operations[i] != '\n'
+                   && what_char(operations[i]) == 0)
             {
                 curr_token[curr_i] = operations[i];
                 curr_i++;
@@ -166,7 +155,8 @@ struct queue *to_rpn(struct queue *q_tokens)
             {
                 if (operators->data.value != '(' && t.value != '(')
                 {
-                    if (priority[t.value - 37] < priority[operators->data.value - 37])
+                    if (priority[t.value - 37]
+                        < priority[operators->data.value - 37])
                     {
                         operators = stack_pop(operators, &temp);
                         rpn = queue_push(rpn, temp);
@@ -184,9 +174,9 @@ struct queue *to_rpn(struct queue *q_tokens)
     return rpn;
 }
 
-int evalexpr(char* operations, int is_rpn)
+int evalexpr(char *operations, int is_rpn)
 {
-    struct queue* toks = create_tokens(operations);
+    struct queue *toks = create_tokens(operations);
     struct queue *rpn;
     if (is_rpn)
     {
@@ -195,6 +185,10 @@ int evalexpr(char* operations, int is_rpn)
     else
     {
         rpn = to_rpn(toks);
+    }
+    if (!rpn)
+    {
+        exit(0);
     }
     struct token t;
     struct stack *expr_stack = NULL;
@@ -213,14 +207,16 @@ int evalexpr(char* operations, int is_rpn)
         }
         else
         {
-            //TODO: check if stack NULL err
-            operator = t.value;
+            operator= t.value;
             expr_stack = stack_pop(expr_stack, &b);
             expr_stack = stack_pop(expr_stack, &a);
             a.value = do_the_maths[operator - 37](a.value, b.value);
             expr_stack = stack_push(expr_stack, a);
         }
-            //TODO: check if more than 1 elt in stack
+    }
+    if (expr_stack->next)
+    {
+        exit(2);
     }
     expr_stack = stack_pop(expr_stack, &a);
     return a.value;
