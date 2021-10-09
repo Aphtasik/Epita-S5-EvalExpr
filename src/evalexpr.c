@@ -14,7 +14,7 @@ static const int pritority[] =
     [EXP] = 1
 };
 
-static const operation operations[] =
+static const operation do_the_maths[] =
 {
     [ADD] = my_add,
     [SUB] = my_sub,
@@ -135,18 +135,13 @@ static struct queue *create_tokens(const char* operations)
 //TODO: add parenthesis handle / priority in stack
 struct queue *to_rpn(struct queue *q_tokens)
 {
-    while(q_tokens)
-    {
-        printf("%d\n", q_tokens->data.value);
-        q_tokens = q_tokens->next;
-    }
     struct stack *operators = NULL;
     struct queue *rpn = NULL;
     struct token t;
-    q_tokens = queue_pop(q_tokens, &t);
 
     while (q_tokens)
     {
+        q_tokens = queue_pop(q_tokens, &t);
         if (!t.is_operator)
         {
             rpn = queue_push(rpn, t);
@@ -155,14 +150,45 @@ struct queue *to_rpn(struct queue *q_tokens)
         {
             operators = stack_push(operators, t);
         }
-        q_tokens = queue_pop(q_tokens, &t);
+    }
+    while (operators)
+    {
+        operators = stack_pop(operators, &t);
+        rpn = queue_push(rpn, t);
     }
     return rpn;
 }
 
-struct queue *evalexpr(const char* operations)
+int evalexpr(const char* operations)
 {
     struct queue* toks = create_tokens(operations);
     struct queue *rpn = to_rpn(toks);
-    return rpn;
+    struct token t;
+    struct stack *expr_stack = NULL;
+
+    struct token a;
+    struct token b;
+
+    int operator;
+
+    while (rpn)
+    {
+        rpn = queue_pop(rpn, &t);
+        if (!t.is_operator)
+        {
+            expr_stack = stack_push(expr_stack, t);
+        }
+        else
+        {
+            //TODO: check if stack NULL err
+            operator = t.value;
+            expr_stack = stack_pop(expr_stack, &b);
+            expr_stack = stack_pop(expr_stack, &a);
+            a.value = do_the_maths[operator - 37](a.value, b.value);
+            expr_stack = stack_push(expr_stack, a);
+        }
+            //TODO: check if more than 1 elt in stack
+    }
+    expr_stack = stack_pop(expr_stack, &a);
+    return a.value;
 }

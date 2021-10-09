@@ -2,8 +2,26 @@
 
 #include <criterion/criterion.h>
 
-Test(create_token, simple)
+Test(simple, mod)
 {
-    
-    cr_assert_eq("", res, "EXPECTED: 0, GOT: %d", res);
+    int res = evalexpr("5 % 2");
+    cr_assert_eq(1, res, "EXPECTED: %d, GOT: %d", 1, res);
+}
+
+Test(simple, add)
+{
+    int res = evalexpr("3 +4");
+    cr_assert_eq(7, res, "EXPECTED: %d, GOT: %d", 7, res);
+}
+
+Test(simple, sub)
+{
+    int res = evalexpr("7 - 2");
+    cr_assert_eq(5, res, "EXPECTED: %d, GOT: %d", 5, res);
+}
+
+Test(simple, mul)
+{
+    int res = evalexpr("3*4");
+    cr_assert_eq(12, res, "EXPECTED: %d, GOT: %d", 12, res);
 }

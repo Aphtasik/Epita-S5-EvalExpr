@@ -6,12 +6,12 @@
 
 enum oper
 {
-    ADD,
-    SUB,
-    MUL,
-    DIV,
-    MOD,
-    EXP
+    ADD = 6,
+    SUB = 8,
+    MUL = 5,
+    DIV = 10,
+    MOD = 0,
+    EXP = 57
 };
 
 struct token
@@ -34,7 +34,7 @@ struct stack
 };
 
 struct stack *stack_push(struct stack *s, struct token elt);
-struct stack *stack_pop(struct stack *s);
+struct stack *stack_pop(struct stack *s, struct token *elt);
 
 struct queue
 {
@@ -45,6 +45,6 @@ struct queue
 struct queue *queue_push(struct queue *l, struct token elt);
 struct queue *queue_pop(struct queue *l, struct token *elt);
 
-struct queue *evalexpr(const char* operations);
+int evalexpr(const char* operations);
 
 #endif

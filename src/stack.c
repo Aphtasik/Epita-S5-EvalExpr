@@ -13,13 +13,23 @@ struct stack *stack_push(struct stack *s, struct token elt)
     return new;
 }
 
-struct stack *stack_pop(struct stack *s)
+struct stack *stack_pop(struct stack *s, struct token *elt)
 {
     if (!s)
     {
         return NULL;
     }
-    struct stack *next = s->next;
-    free(s);
-    return next;
+    else if (!s->next)
+    {
+        *elt = s->data;
+        free(s);
+        return NULL;
+    }
+    else
+    {
+        struct stack *next = s->next;
+        *elt = s->data;
+        free(s);
+        return next;
+    }
 }

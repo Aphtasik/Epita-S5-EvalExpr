@@ -27,12 +27,18 @@ struct queue *queue_pop(struct queue *l, struct token *elt)
     {
         struct queue *head = l;
         struct queue *prev = l;
-        while (l)
+        if (!l->next)
+        {
+            *elt = l->data;
+            free(l);
+            return NULL;
+        }
+        while (l->next)
         {
             prev = l;
             l = l->next;
         }
-        prev->next = l->next;
+        prev->next = NULL;
         *elt = l->data;
         free(l);
         return head;
