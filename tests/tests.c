@@ -44,3 +44,14 @@ Test(two_op, add_sub)
     cr_assert_eq(5, res, "EXPECTED: %d, GOT: %d", 5, res);
 }
 
+Test(parenthesis, useless)
+{
+    int res = evalexpr("(3+4)-2");
+    cr_assert_eq(5, res, "EXPECTED: %d, GOT: %d", 5, res);
+}
+
+Test(parenthesis, usefull)
+{
+    int res = evalexpr("3*(4-2)");
+    cr_assert_eq(6, res, "EXPECTED: %d, GOT: %d", 6, res);
+}
